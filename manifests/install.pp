@@ -75,4 +75,13 @@ class kibana::install {
   package { 'kibana':
     ensure => $::kibana::ensure,
   }
+  #is created by init scrit but not by systemd
+  if $_ensure == 'present' {
+    file { '/var/log/kibana/':
+      ensure  => 'directory',
+      owner   => $::kibana::user,
+      group   => $::kibana::group,
+      require => Package['kibana'],
+    }
+  }
 }

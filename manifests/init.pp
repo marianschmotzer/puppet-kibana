@@ -26,17 +26,23 @@
 # @param repo_priority [Integer] Optional repository priority
 # @param repo_proxy [String] Proxy to use for repository access (yum only)
 # @param repo_version [String] Repository major version to use
+# @param user [String] Kibana user (usually kibana)
+# @param group [String] Kibana group (usually kibana)
+# @param service_provider [String] system service provider eg. systemd,init
 #
-class kibana (
-  $ensure          = 'present',
-  $config          = {},
-  $manage_repo     = true,
-  $repo_key_id     = '46095ACC8548582C1A2699A9D27D666CD88E42B4',
-  $repo_key_source = 'https://artifacts.elastic.co/GPG-KEY-elasticsearch',
-  $repo_priority   = undef,
-  $repo_proxy      = undef,
-  $repo_version    = '5.x',
-) {
+class kibana(
+  $ensure           = $kibana::params::ensure,
+  $config           = $kibana::params::config,
+  $manage_repo      = $kibana::params::manage_repo,
+  $repo_key_id      = $kibana::params::repo_key_id,
+  $repo_key_source  = $kibana::params::repo_key_source,
+  $repo_priority    = $kibana::params::repo_priority,
+  $repo_proxy       = $kibana::params::repo_proxy,
+  $repo_version     = $kibana::params::repo_version,
+  $user             = $kibana::params::user,
+  $group            = $kibana::params::group,
+  $service_provider = $kibana::params::service_provider
+) inherits kibana::params {
 
   validate_string($ensure,
                   $repo_key_id,
